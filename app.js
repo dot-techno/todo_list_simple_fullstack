@@ -14,6 +14,9 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// process.env has:
+// mongo_server, mongo_login and mongo_password 
+// These are loaded from env variables
 
 mongoose.connect(process.env.mongo_server, {user: process.env.mongo_login, pass: process.env.mongo_password});
 
