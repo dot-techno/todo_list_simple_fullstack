@@ -3,7 +3,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import {getDate, getDay} from "./date.js";
-
+import dotenv from 'dotenv'
+dotenv.config()
+console.log(process.env);
 
 const app = express();
 
@@ -12,7 +14,9 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistdb");
+
+mongoose.connect(process.env.mongo_server, {user: process.env.mongo_login, pass: process.env.mongo_password});
+
 const itemsSchema = new mongoose.Schema({
     name: String
 });
@@ -107,7 +111,7 @@ app.post("/", async function (req, res) {
 
     if(listName === getDate()){
         console.log("Adding item to default list: "+getDate());
-        item.save(); // save item to default collection called items    
+        await item.save(); // save item to default collection called items    
         return res.redirect("/"); // reload and reshow items.
     }
 
